@@ -1,56 +1,48 @@
 import streamlit as st
-import openai
 import os
 from dotenv import load_dotenv
+import google.generativeai as genai
 
-# Load API key from .env file
+# Load API key
 load_dotenv(dotenv_path="keys.env")
-TOGETHER_API_KEY = os.getenv("API_KEY")
+gemini_api_key = os.getenv("API_KEY")
+genai.configure(api_key=gemini_api_key)
 
-# Use Together.ai as OpenAI-compatible endpoint
-openai.api_key = TOGETHER_API_KEY
-openai.api_base = "https://api.together.xyz/v1"
-
-# Choose a Together-hosted model
-MODEL_NAME = "meta-llama/Llama-3-8b-chat-hf"
-
-# Load friend profile
+# Load Manas' personality
 with open("manas'mentality.txt", "r", encoding="utf-8") as file:
     friend_profile = file.read()
 
+# Streamlit page config
 st.set_page_config(page_title="Manas Mentality", layout="centered")
-st.title("Dive deep into Manas Mentality")
+st.title("🧠 Dive deep into Manas Mentality")
+
+# Create Gemini model
+model = genai.GenerativeModel("gemini-2.0-flash")
 
 # Initialize chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = [
-        {"role": "system", "content": f"You are acting as Manas. Here is his personality:\n{friend_profile}"}
-    ]
+if "chat" not in st.session_state:
+    # Start the chat with a system message
+    st.session_state.chat = model.start_chat(history=[
+        {"role": "user", "parts": [f"Act like Manas. Here is his personality:\n{friend_profile}"]}
+    ])
 
-# Display previous chat messages
-for msg in st.session_state.messages[1:]:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
+# Display past conversation
+for msg in st.session_state.chat.history[1:]:
+    with st.chat_message("user" if msg.role == "user" else "assistant"):
+        st.markdown("".join(part.text for part in msg.parts))
 
 # User input
 prompt = st.chat_input("Talk to ManasAI...")
 
 if prompt:
-    st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
     try:
-        # Together API call
-        response = openai.ChatCompletion.create(
-            model=MODEL_NAME,
-            messages=st.session_state.messages,
-            temperature=0.7,
-        )
-        reply = response.choices[0].message.content
+        response = st.session_state.chat.send_message(prompt)
+        reply = response.text
     except Exception as e:
         reply = f"⚠️ Error: {e}"
 
-    st.session_state.messages.append({"role": "assistant", "content": reply})
     with st.chat_message("assistant"):
         st.markdown(reply)
