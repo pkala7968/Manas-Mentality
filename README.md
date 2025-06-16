@@ -5,7 +5,7 @@ This is just a fun project for me to revise the use of LLMs in projects.
 ---
 ## Project Overview
 
-This is a Streamlit-based AI chatbot that simulates conversations with your friend (here, Manas). The bot is powered by a large language model hosted on [Together.ai](https://www.together.ai/), and it behaves based on a detailed personality profile you provide.
+This is a Streamlit-based AI chatbot that simulates conversations with your friend (here, Manas). The bot is powered by **Gemini** (Google's Generative AI model), and it behaves based on a detailed personality profile you provide.
 
 This project is inspired by my friend Manas who is a very hardworking, funny, sarcastic and smart individual. He is a very humble guy and does not boast about his skills at all (even though he is super good at a lottttt of stuff). Maybe he is just unaware of how awesome and hardworking he is or its just him being humble.
 

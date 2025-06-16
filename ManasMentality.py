@@ -14,7 +14,7 @@ with open("manas'mentality.txt", "r", encoding="utf-8") as file:
 
 # Streamlit page config
 st.set_page_config(page_title="Manas Mentality", layout="centered")
-st.title("🧠 Dive deep into Manas Mentality")
+st.title("Dive deep into Manas Mentality")
 
 # Create Gemini model
 model = genai.GenerativeModel("gemini-2.0-flash")
