@@ -1,6 +1,6 @@
 # Manas Mentality
 
-This is just a fun project for me to revise the use of LLMs in projects.
+This is just a fun project for me to use an LLM based chatbot to mimmick (what i think of) my friend manas.
 
 ---
 ## Project Overview
